@@ -30,16 +30,21 @@ gulp.task('install', () => {
              .pipe(install({ production: true }))
 })
 
+gulp.task('copy dlls', () => {
+  return gulp.src(['/usr/lib64/libjq.so*', '/usr/lib64/libonig.so*'])
+             .pipe(gulp.dest('dist'))
+})
+
 gulp.task('zip', () => {
   return gulp.src(['dist/**/*'])
              .pipe(zip('dist.zip'))
              .pipe(gulp.dest('./'))
 })
 
-gulp.task('build', done => runSequence('compile', 'install', 'zip', done))
+gulp.task('build', done => runSequence('compile', 'install', 'copy dlls', 'zip', done))
 
 gulp.task('deploy', ['build'], (done) => {
-  awsLambda.deploy('./dist.zip', require('config').lambda_params, done)
+  awsLambda.deploy('./dist.zip', require('./config'), done)
 })
 
 gulp.task('default', (done) => runSequence('compile', 'test', done))

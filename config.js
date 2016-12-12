@@ -5,6 +5,7 @@ module.exports = {
   memorySize: 1024, // MB
   role: process.env.TEST_ROLE,
   functionName: 'sjs-sample',
-  region: 'ap-northeast-1'
+  region: 'ap-northeast-1',
+  runtime: 'nodejs4.3'
 }
 
